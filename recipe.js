@@ -4,6 +4,7 @@ var qs = require('querystring');
 const MongoClient = require('mongodb').MongoClient;
 var readline = require('readline');
 const url = "mongodb+srv://cate1344:Cad94010@cluster0.tbm9v.mongodb.net/assignment_14?retryWrites=true&w=majority";  // connection string goes here
+var port = process.env.PORT || 3000;
 
 
 http.createServer(function(req, res) {
@@ -32,4 +33,4 @@ http.createServer(function(req, res) {
         
     }
     
-}).listen(8080);
+}).listen(port);
