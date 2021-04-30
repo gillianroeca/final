@@ -6,7 +6,7 @@
 
 <p>
 
-<input type="text" name="query"></input>
+Input Ingredient: <input type="text" name="query"></input>
 <br><br>
 
 <button type="submit" name="button" onClick="recipe()">Submit</button>
@@ -16,12 +16,14 @@
         <script>
             function recipe()
             {
+                document.getElementsByName("query")[0].style.display = "none";
+                document.getElementsByName("button")[0].style.display = "none";
                 request = new XMLHttpRequest();
                 console.log("1 - request object created");
                 //q is the query parameter
                 //this is what we want the user to input
 
-                alert("yee");
+            
                 //var query = "<?php echo $_POST['input']; ?>";
                 var query = document.getElementsByName("query")[0].value;
                 alert(query);
