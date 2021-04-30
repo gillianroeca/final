@@ -26,6 +26,23 @@
         		width: 100%;
         		z-index:5;
         		}
+        .container {
+            position: relative;
+            text-align: center;
+            z-index: -1;
+          	width: 100%;
+          }
+
+        .subtitle {
+          	position: absolute;
+          	top: 30%;
+          	left: 25%;
+          	transform: translate(-50%, -50%);
+          	color: #fff;
+          	text-decoration: none;
+          	font-size: 30px;
+          	font-family: sans-serif;
+          }
 
         </style>
 
@@ -110,13 +127,17 @@
 
   <h1 class="header"> Your Recipe Book </h1>
 
-  <h3 class="topnav" ></h3>
+  <h3 class="topnav" >nav</h3>
 
   <div class="spacing" style="height:180px">
       <p></p>
   </div>
 
-  <p>
+  <div class="container">
+        <img src="background.jpeg" style="width:100%">
+  </div>
+
+  <p class="subtitle">
 
     Input Ingredient: <input type="text" name="query"></input>
   <br><br>
