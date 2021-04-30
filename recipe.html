@@ -9,7 +9,7 @@
 <input type="text" name="query"></input>
 <br><br>
 
-<button type="submit" name="button" onclick="return recipe()">Submit</button>
+<button type="submit" name="button" onClick="recipe()">Submit</button>
 
 </p>
 
@@ -17,29 +17,29 @@
             function recipe()
             {
                 request = new XMLHttpRequest();
-                // console.log("1 - request object created");
+                console.log("1 - request object created");
                 //q is the query parameter
                 //this is what we want the user to input
 
                 alert("yee");
                 //var query = "<?php echo $_POST['input']; ?>";
-                var query = document.getElementsByName("query").value;
+                var query = document.getElementsByName("query")[0].value;
                 alert(query);
-                document.getElementById("keyword").innerHTML = query;
+                document.getElementById("keyword").innerHTML += query;
 
                 // query = document.getElementById("input").value;
 
                 // url = "https://api.edamam.com/search?q=chicken&app_id=ea82839e&app_key=6e8bc70b6a0631d3b4b16b5c4a135d65";
                 url = "https://api.edamam.com/search?q=" + query + "&app_id=ea82839e&app_key=6e8bc70b6a0631d3b4b16b5c4a135d65";
                 request.open("GET", url, true)
-                // console.log("2 - opened request file");
+                console.log("2 - opened request file");
             //runs when the state changes
             request.onreadystatechange = function()
             {
                 //if the operation is complete and the status is complete
                 if (request.readyState == 4 && request.status == 200)
                 {
-                    // console.log("5 - response received");
+                    console.log("5 - response received");
                     //gets the data
                     result = request.responseText;
                     //writing the raw data
