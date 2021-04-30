@@ -2,7 +2,8 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title></title>
+        <title>Main</title>
+        <link rel="stylesheet" type="text/css" href="style.css" />
 
 <p>
 
@@ -23,7 +24,7 @@ Input Ingredient: <input type="text" name="query"></input>
                 //q is the query parameter
                 //this is what we want the user to input
 
-            
+
                 //var query = "<?php echo $_POST['input']; ?>";
                 var query = document.getElementsByName("query")[0].value;
                 alert(query);
@@ -88,6 +89,15 @@ Input Ingredient: <input type="text" name="query"></input>
         </script>
     </head>
     <body>
+      <h1 class="header"> Your Recipe Book </h1>
+
+  <h3 class="topnav" >
+    <a href="home.html">Home</a>
+  </h3>
+
+  <div class="spacing" style="height:180px">
+      <p></p>
+  </div>
 
         <!-- <form method="post" onsubmit="recipe()">
 
