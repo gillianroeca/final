@@ -11,14 +11,14 @@ http.createServer(function(req, res) {
     //writing the html form onto the webpage
     if (req.url == "/")
     {
-        file = "form.html";
+        file = "recipe.html";
         fs.readFile(file, function(err, text) {
             res.writeHead(200, {'Content-Type': 'text/html'});
             res.write(text);
             res.end();
         });
     }
-
+ /*
     else if (req.url == "/recipes")
     {
             file = "recipe.html";
@@ -27,10 +27,12 @@ http.createServer(function(req, res) {
                 res.write(text);
                 res.end();
             });
-    }
+    }*/
     else if (req.url == "/display")
     {
             file = "display.html";
+            console.log(req);
+            alert(req);
             fs.readFile(file, function(err, text) {
                 res.writeHead(200, {'Content-Type': 'text/html'});
                 res.write(text);
