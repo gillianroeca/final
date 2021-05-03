@@ -1,167 +1,305 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title>Main</title>
-        <link rel="stylesheet" type="text/css" href="style.css" />
-        <style>
-        .header{
-            background-color: #f74a4a;
-            text-align: center;
-            padding: 30px;
-        		top: 0;
-        		left:0;
-        		width: 100%;
-        	z-index: 2;
-        	text-shadow: -1px 1px 0 #FFFFFF, 1px 1px 0 #FFFFFF, 1px -1px 0 #FFFFFF, -1px -1px 0 #FFFFFF;
-        }
+<head>
+    <meta charset="utf-8">
+    <title>Main</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <style>
+    .header{
+        background-color: #f74a4a;
+        text-align: center;
+        padding: 30px;
+        top: 0;
+        left:0;
+        width: 100%;
+        z-index: 2;
+        text-shadow: -1px 1px 0 #FFFFFF, 1px 1px 0 #FFFFFF, 1px -1px 0 #FFFFFF, -1px -1px 0 #FFFFFF;
+    }
 
-        .topnav{
-            overflow: hidden;
-            background-color: #333;
-        		top: 115px;
-        		left:0;
-        		width: 100%;
-        		z-index:5;
-        		}
-        .container {
-            position: relative;
-            text-align: center;
-            z-index: -1;
-          	width: 100%;
-          }
+    .topnav{
+        overflow: hidden;
+        background-color: #333;
+        top: 115px;
+        left:0;
+        width: 100%;
+        z-index:5;
+    }
 
-        .subtitle {
-          	position: absolute;
-          	top: 30%;
-          	left: 25%;
-          	transform: translate(-50%, -50%);
-          	color: #000;
-          	text-decoration: none;
-          	font-size: 30px;
-          	font-family: sans-serif;
-          }
+    .bottombar{
+        overflow: hidden;
+        background-color: lightblue;
+        height: 100px;
+        left:0;
+        width: 100%;
+        bottom: 0%;
+        position: fixed;
+        z-index:2;
+    }
 
-        </style>
+    .button {
+        text-align:center;
+        background-color:black;
+        background-image: linear-gradient(white, #FF853B);
+        background-size: 30px 100%, 100% 100%;
+        width:150px;
+        height:50px;
+        top:25px;
+        line-height:20px;
+        padding: 0px;
+        color:black;
+        margin: 0px 76px;
+        border: 3px black solid;
+        border-radius: 10px;
+        font-size: 17px;
+        text-decoration: none;
+        position:relative;
+        float:left;
+        z-index:3
+    }
 
-        <script>
-            function recipe()
+    .container {
+        position: relative;
+        text-align: center;
+        z-index: -1;
+        width: 100%;
+    }
+
+    .subtitle {
+        position: absolute;
+        top: 30%;
+        left: 25%;
+        transform: translate(-50%, -50%);
+        color: #000;
+        text-decoration: none;
+        font-size: 30px;
+        font-family: sans-serif;
+    }
+
+    .recipe_block {
+        margin: 25px;
+        border: 1px solid #000;
+        float: left;
+        width: 300px;
+        height: 500px;
+
+    }
+
+    .recipe_block img {
+        width: 300px;
+        height: 400px;
+    }
+    .desc {
+        padding: 15px;
+        text-align: center;
+    }
+
+    .results {
+        display: none;
+    }
+
+    </style>
+
+    <script>
+    urls = new Array();
+    images = new Array();
+    names = new Array();
+
+    function recipe()
+    {
+        document.getElementsByName("query")[0].style.display = "none";
+        document.getElementsByName("button")[0].style.display = "none";
+        request = new XMLHttpRequest();
+        console.log("1 - request object created");
+        //q is the query parameter
+        //this is what we want the user to input
+
+        //var query = "<?php echo $_POST['input']; ?>";
+        var query = document.getElementsByName("query")[0].value;
+        alert(query);
+
+        // query = document.getElementById("input").value;
+
+        // url = "https://api.edamam.com/search?q=chicken&app_id=ea82839e&app_key=6e8bc70b6a0631d3b4b16b5c4a135d65";
+        url = "https://api.edamam.com/search?q=" + query + "&app_id=ea82839e&app_key=6e8bc70b6a0631d3b4b16b5c4a135d65";
+        request.open("GET", url, true)
+        console.log("2 - opened request file");
+        //runs when the state changes
+        request.onreadystatechange = function()
+        {
+            //if the operation is complete and the status is complete
+            if (request.readyState == 4 && request.status == 200)
             {
-                document.getElementsByName("query")[0].style.display = "none";
-                document.getElementsByName("button")[0].style.display = "none";
-                request = new XMLHttpRequest();
-                console.log("1 - request object created");
-                //q is the query parameter
-                //this is what we want the user to input
+                console.log("5 - response received");
+                //gets the data
+                result = request.responseText;
+                //writing the raw data
+                // document.getElementById("data").innerHTML = result
+                // + "<br/><br/>";
 
+                //putting the data back into the object
+                food = JSON.parse(result);
 
-                //var query = "<?php echo $_POST['input']; ?>";
-                var query = document.getElementsByName("query")[0].value;
-                alert(query);
-                document.getElementById("keyword").innerHTML += query;
+                // document.getElementById("query").innerHTML +=
+                // food.q;
 
-                // query = document.getElementById("input").value;
-
-                // url = "https://api.edamam.com/search?q=chicken&app_id=ea82839e&app_key=6e8bc70b6a0631d3b4b16b5c4a135d65";
-                url = "https://api.edamam.com/search?q=" + query + "&app_id=ea82839e&app_key=6e8bc70b6a0631d3b4b16b5c4a135d65";
-                request.open("GET", url, true)
-                console.log("2 - opened request file");
-            //runs when the state changes
-            request.onreadystatechange = function()
-            {
-                //if the operation is complete and the status is complete
-                if (request.readyState == 4 && request.status == 200)
+                numRecipes = food.to;
+                for (i=0; i<numRecipes; i++)
                 {
-                    console.log("5 - response received");
-                    //gets the data
-                    result = request.responseText;
-                    //writing the raw data
-                    // document.getElementById("data").innerHTML = result
-                    // + "<br/><br/>";
-
-                    //putting the data back into the object
-                    food = JSON.parse(result);
-
-                    // document.getElementById("query").innerHTML +=
-                    // food.q;
-
-                    numRecipes = food.to;
-                    for (i=0; i<numRecipes; i++)
-                    {
-                        document.getElementById("format").innerHTML +=
-                        food.hits[i].recipe.label + ", ";
-                    }
-
-
+                    //document.getElementById("format").innerHTML +=
+                    //food.hits[i].recipe.label + ", ";
+                    document.getElementById("recipe" + i).innerHTML +=
+                    food.hits[i].recipe.label;
+                    //document.getElementById("url" + i).innerHTML +=
+                    //food.hits[i].recipe.url;
+                    urls[i] = food.hits[i].recipe.url;
+                    images[i] = food.hits[i].recipe.image;
+                    names[i] = food.hits[i].recipe.label;
                 }
-                //request status is not yet ready
-                else if (request.readyState == 4 && request.status != 200) {
+                //document.write("<img src='" + images[0] + "'/>");
+                // for (j=0; j<10; j++)
+                // {
+                //     alert(urls[j]);
+                //     alert(images[j]);
+                // }
 
-                    document.getElementById("data").innerHTML = "Something " +
-                        "is wrong!  Check the logs to see where this went off "
-                        + "the rails";
 
-                }
-                //request state is not yet ready
-                else if (request.readyState == 3) {
-
-                    document.getElementById("data").innerHTML = "Too soon! " +
-                        "Try again";
-
-                }
             }
-            // sending the request for the data from the web server
-            request.send();
-            console.log("4 - Request sent");
+            //request status is not yet ready
+            else if (request.readyState == 4 && request.status != 200) {
+
+                document.getElementById("data").innerHTML = "Something " +
+                "is wrong!  Check the logs to see where this went off "
+                + "the rails";
+
+            }
+            //request state is not yet ready
+            else if (request.readyState == 3) {
+
+                document.getElementById("data").innerHTML = "Too soon! " +
+                "Try again";
+
+            }
         }
+        // sending the request for the data from the web server
+        request.send();
+        console.log("4 - Request sent");
+        document.getElementById("results").style.display = "inline";
+    }
 
 
-        </script>
-    </head>
-    <body>
+
+
+
+    </script>
+</head>
+<body>
 
 
 
 
-  <h1 class="header"> Your Recipe Book </h1>
+    <h1 class="header"> Your Recipe Book </h1>
 
-  <h3 class="topnav" >nav</h3>
+    <h3 class="topnav" >nav</h3>
 
 
-  <div class="container">
+    <div class="container">
         <img src="background.jpeg" style="width:100%">
-  </div>
+    </div>
 
-  <p class="subtitle">
+    <p class="subtitle">
 
-    Input Ingredient: <input type="text" name="query"></input>
-  <br><br>
+        Input Ingredient: <input type="text" name="query"></input><br>
 
-  <button type="submit" name="button" onClick="recipe()">Submit</button>
 
-  </p>
+        <button type="submit" name="button" onClick="recipe()">Submit</button>
 
-        <!-- <form method="post" onsubmit="recipe()">
+    </p>
+    <br><br><br><br><br><br><br>
 
-            <div id="text">
 
-                Input ingredient: <input type="text" id="input" name="input">
+
+    <div id="data"></div><br><br><br><br>
+    <!-- label = name of recipe, source = where recipe is from, url = link to recipe  -->
+    <div class="results" id="results">
+
+        <div class="recipe_block" id="recipe0">
+            <div id="url0">
+
+            </div>
+            <!-- <img src="https://www.edamam.com/web-img/e42/e42f9119813e890af34c259785ae1cfb.jpg"> -->
+            <script>
+            alert(images[0]);
+            document.write("<img src='" + images[0] + "'/>");
+
+            </script>
+            <div class="desc">
+                Add to: <br>
+                <input type="button" name="fav" value="Favorite" onClick = "parent.location='results.js'">
+                <input type="button" name="didntlike" value="Didn't Like" onClick = "addToDatabase(2, 0)">
+                <input type="button" name="wanttotry" value="Want To Try" onClick = "addToDatabase(3, 0)">
+            </div>
+        </div>
+        <div class="recipe_block" id="recipe1">
+            <div id="url1">
 
             </div>
 
-            <br><br>
-            <input type="submit" value="Submit">
-
-        </form> -->
-
-        <div id="data"></div><br><br><br><br>
-        <!-- label = name of recipe, source = where recipe is from, url = link to recipe  -->
 
 
+        </div>
+        <div class="recipe_block" id="recipe2">
+            <div id="url2">
 
-        <div id="keyword">Keyword used: </div><br><br>
-        <div id="format"></div>
+            </div>
+        </div>
+        <div class="recipe_block" id="recipe3">
+            <div id="url3">
+
+            </div>
+        </div>
+        <div class="recipe_block" id="recipe4">
+            <div id="url4">
+
+            </div>
+        </div>
+        <div class="recipe_block" id="recipe5">
+            <div id="url5">
+
+            </div>
+        </div>
+        <div class="recipe_block" id="recipe6">
+            <div id="url6">
+
+            </div>
+        </div>
+        <div class="recipe_block" id="recipe7">
+            <div id="url7">
+
+            </div>
+        </div>
+        <div class="recipe_block" id="recipe8">
+            <div id="url8">
+
+            </div>
+        </div>
+        <div class="recipe_block" id="recipe9">
+            <div id="url9">
+
+            </div>
+        </div>
+
+    </div>
 
 
-    </body>
+
+    <div id="format"></div>
+
+    <h4 class="bottombar" >
+        <a class="button" href="https://codebloodedfinal.herokuapp.com/favorites"><p>Favorites</p></a>
+        <a class="button" href="https://codebloodedfinal.herokuapp.com/wanttotry"><p>Want To Try</p></a>
+        <a class="button" href="https://codebloodedfinal.herokuapp.com/didntlike"><p>Didn't Like</p></a>
+        <a class="button" href="https://codebloodedfinal.herokuapp.com/explore"><p>Explore</p></a>
+    </h4>
+
+</body>
 </html>

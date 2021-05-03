@@ -27,9 +27,15 @@ http.createServer(function(req, res) {
                 res.write(text);
                 res.end();
             });
-
-
-
+    }
+    else if (req.url == "/display")
+    {
+            file = "display.html";
+            fs.readFile(file, function(err, text) {
+                res.writeHead(200, {'Content-Type': 'text/html'});
+                res.write(text);
+                res.end();
+            });
     }
 
 }).listen(port);

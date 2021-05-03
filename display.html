@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+        <style>
+        .header{
+            background-color: #f74a4a;
+            text-align: center;
+            padding: 30px;
+        		top: 0;
+        		left:0;
+        		width: 100%;
+        	z-index: 2;
+        	text-shadow: -1px 1px 0 #FFFFFF, 1px 1px 0 #FFFFFF, 1px -1px 0 #FFFFFF, -1px -1px 0 #FFFFFF;
+        }
+
+        .topnav{
+            overflow: hidden;
+            background-color: #333;
+        		top: 115px;
+        		left:0;
+        		width: 100%;
+        		z-index:5;
+        		}
+
+        .bottombar{
+          overflow: hidden;
+          background-color: lightblue;
+          height: 200px;
+        	left:0;
+        	width: 100%;
+          bottom: 0%;
+          position: fixed;
+    		  z-index:2;
+        }
+
+        .button {
+          	text-align:center;
+            background-color:black;
+            background-image: linear-gradient(white, #FF853B);
+            background-size: 30px 100%, 100% 100%;
+            width:200px;
+            height:100px;
+            top:50px;
+            line-height:60px;
+            padding: 0px;
+            color:black;
+            margin: 0px 76px;
+            border: 3px black solid;
+            border-radius: 10px;
+            font-size: 23px;
+            text-decoration: none;
+            position:relative;
+            float:left;
+            z-index:3
+          }
+
+        .container {
+            position: relative;
+            text-align: center;
+            z-index: -1;
+          	width: 100%;
+          }
+
+        .subtitle {
+          	position: absolute;
+          	top: 30%;
+          	left: 25%;
+          	transform: translate(-50%, -50%);
+          	color: #000;
+          	text-decoration: none;
+          	font-size: 30px;
+          	font-family: sans-serif;
+          }
+
+        </style>
+</head>
+
+<body onload="display_favorites()">
+
+	<h1 class="header"> Your Recipe Book </h1>
+
+	<h3 class="topnav" >nav</h3>
+
+
+	<div class="container">
+    	<img src="background.jpeg" style="width:100%">
+	</div>
+
+	<div id="favorites"></div>
+
+    <h4 class="bottombar" >
+        <a class="button" href="https://codebloodedfinal.herokuapp.com/favorites"><p>Favorites</p></a>
+        <a class="button" href="https://codebloodedfinal.herokuapp.com/wanttotry"><p>Want To Try</p></a>
+        <a class="button" href="https://codebloodedfinal.herokuapp.com/didntlike"><p>Didn't Like</p></a>
+        <a class="button" href="https://codebloodedfinal.herokuapp.com/explore"><p>Explore</p></a>
+    </h4>
+
+
+<script>
+	function display_favorites() {
+		var mongo = require('mongodb');
+		const MongoClient = mongo.MongoClient;
+		const url = "mongodb+srv://cate1344:Cad94010@cluster0.tbm9v.mongodb.net/Recipe_Book?retryWrites=true&w=majority";
+
+		// Set up mongo connection
+		MongoClient.connect(url, {useUnifiedTopology : true}, function(err, db) {
+			  if(err) { return console.log(err); return;}
+			  
+			    var dbo = db.db('Recipe_Book');
+				var collection = dbo.collection('Favorites');
+
+				collection.find({}).toArray(function(err, result) {
+					if (err) throw err;
+				    document.getElementById("favorites").innerHTML += result;
+				});
+
+				//db.close();
+		});
+	}
+</script>
+
+</body>
+</html>
