@@ -5,6 +5,13 @@
     <title>Main</title>
     <!-- <link rel="stylesheet" type="text/css" href="style.css" /> -->
     <style>
+    body{
+      background-image: url('https://photos.smugmug.com/photos/i-pM4SXgb/0/d6b50170/M/i-pM4SXgb-M.jpg');
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-size: cover;
+    }
+
     .header{
         background-color: #f74a4a;
         text-align: center;
@@ -27,6 +34,7 @@
         color: white;
         padding: 6px;
         font-weight: lighter;
+        font-family: sans-serif;
     }
 
     .bottombar{
@@ -61,14 +69,33 @@
         z-index:3;
     }
 
+    .find {
+        text-align:center;
+        background-color:black;
+        background-image: linear-gradient(white, #FF853B);
+        background-size: 30px 100%, 100% 100%;
+        width:20vw;
+        height:50px;
+        top:20px;
+        line-height:20px;
+        padding: 0px;
+        color:black;
+        margin: 5px 8px;
+        border: 3px black solid;
+        border-radius: 10px;
+        font-size: 17px;
+        text-decoration: none;
+        z-index:3;
+    }
+
     .farleft {
-        left:3vw;
+        left:13vw;
     }
     .midleft {
-        left:6vw;
+        left:18vw;
     }
     .midright {
-        left:9vw;
+        left:23vw;
     }
     .farright {
         left:12vw;
@@ -84,6 +111,29 @@
         cursor: pointer;
     }
 
+    .find:hover {
+        background-image: linear-gradient(white, #FF9F5C);
+        cursor: pointer;
+    }
+
+    .find:active {
+        background-image: linear-gradient(white, #FFC093);
+        cursor: pointer;
+    }
+
+    a:link, a:visited {
+      background-color: #f74a4a;
+      border-radius: 15px;
+      color: white;
+      font-weight: bold;
+      padding: 10px 10px;
+      text-align: center;
+    }
+
+    a:hover, a:active {
+      background-color: red;
+    }
+
     .container {
         position: relative;
         text-align: center;
@@ -92,10 +142,6 @@
     }
 
     .subtitle {
-      /*  position: absolute;
-        top: 30%;
-        left: 25%;
-        transform: translate(-50%, -50%); */
         color: #000;
         text-decoration: none;
         font-size: 30px;
@@ -107,7 +153,7 @@
         border: 3px solid #000;
         float: left;
         width: 300px;
-        height: 390px;
+        height: 408px;
         background-color: #c3ebe7;
 
     }
@@ -131,6 +177,7 @@
 		display: none;
 		padding: 1px 15px;
 	 }
+
     </style>
 
     <script>
@@ -155,10 +202,10 @@
           request.open("GET", url, true)
           console.log("2 - opened request file");
           //runs when the state changes
-          alert("1");
+          //alert("1");
           request.onreadystatechange = function()
           {
-            alert("2");
+            //alert("2");
               //if the operation is complete and the status is complete
               if (request.readyState == 4 && request.status == 200)
               {
@@ -181,7 +228,7 @@
                       urls[i] = food.hits[i].recipe.url;
                       images[i] = food.hits[i].recipe.image;
                       names[i] = food.hits[i].recipe.label;
-                      alert(food.hits[i].recipe.label);
+                      //alert(food.hits[i].recipe.label);
                   }
               }
               //request status is not yet ready
@@ -207,34 +254,36 @@
 </head>
 
 <body>
+
     <h1 class="header">Your Recipe Book </h1>
-    <h3 class="topnav">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspInput an ingredient to find a new recipe!</h3>
+    <h3 class="topnav">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspInput an ingredient to find a new recipe!</h3>
 
-    <div>
-      <a href="https://gillianroeca.smugmug.com/My-First-Gallery/n-Dwq8hz/i-nC2JZ7z/A">
-        <img src="https://photos.smugmug.com/photos/i-nC2JZ7z/0/7a3977cc/S/i-nC2JZ7z-S.jpg" alt=""></a>
-  </div>
 
-    <form id="search" onsubmit="return recipe()">
+
+    <form style="text-align: center;" id="search" onsubmit="return recipe()">
         <p class="subtitle">
-          Input Ingredient: <input type="text" name="query"></input>
+          &nbsp&nbsp&nbsp&nbsp&nbsp&nbspInput Ingredient: <input type="text" name="query"></input>
           <div id="noinput" class="error">Ingredient is required </div></p>
-          <input name="button" type="submit" value="Submit">
+          <input class="find" name="button" type="submit" value="Submit">
     </form>
 
     <h3 class="topnav" style="padding: 2px; color: #333;" > space </h3>
 
     <script language="javascript">
+      function alertadded(text) {
+        alert("Added to database!");
+      }
+
     var t = "";
     t += "<div id='data'></div><br>";
     t += "<div class='results' id='results'>";
-      for (i=0; i<30; i++)s
+      for (i=0; i<30; i++)
       {
           t += "<div class='recipe_block' id='recipe'"+i+"' >";
-          t += "<a href='' id='name"+i+"div'></a>";
           t += "<div class='desc'>";
-          //t += "<form method='post' action='http://localhost:8080/add' >";
-           t += "<form method='post' action='https://codebloodedfinal.herokuapp.com/add' >";
+          t += "<a href='' target='_blank' id='name"+i+"div'></a><br><br>";
+          t += "<form onsubmit='return alertadded()' method='post' action='http://localhost:8080/add' >";
+           //t += "<form method='post' action='https://codebloodedfinal.herokuapp.com/add' >";
           t += "<input type='submit' name='box"+i+"' value='Add To: '>";
           t += "<input type='radio' name='choose"+i+"' value='Favorites'/> Favorites";
           t += "<input type='radio' name='choose"+i+"' value='Did Not Like' /> Did Not Like";
@@ -255,12 +304,12 @@
 
     <h4 class="bottombar" >
       <h4 class="bottombar" >
-         <form method="post" action="https://codebloodedfinal.herokuapp.com/display">
-          <!-- <form method="post" action="http://localhost:8080/display">-->
+         <!--<form method="post" action="https://codebloodedfinal.herokuapp.com/display">-->
+           <form method="post" action="http://localhost:8080/display">
           <input type="submit" class="button farleft" name="submit" value="Favorites">
           <input type="submit" class="button midleft" name="submit" value="Want to Try">
           <input type="submit" class="button midright" name="submit" value="Didn't Like">
-          <input type="submit" class="button farright" name="submit" value="Explore">
+          <!-- <input type="submit" class="button farright" name="submit" value="Explore"> -->
       </form>
     </h4>
 
