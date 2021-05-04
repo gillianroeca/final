@@ -25,7 +25,7 @@
         z-index:2;
         text-align: center;
         color: white;
-        padding: 10px;
+        padding: 6px;
         font-weight: lighter;
     }
 
@@ -92,10 +92,10 @@
     }
 
     .subtitle {
-        position: absolute;
+      /*  position: absolute;
         top: 30%;
         left: 25%;
-        transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%); */
         color: #000;
         text-decoration: none;
         font-size: 30px;
@@ -125,6 +125,12 @@
         display: none;
     }
 
+    .error{
+		color: #D20E11;
+		border: solid 1px #d20e11;
+		display: none;
+		padding: 1px 15px;
+	 }
     </style>
 
     <script>
@@ -134,110 +140,89 @@
 
     function recipe()
     {
-        document.getElementsByName("query")[0].style.display = "none";
-        document.getElementsByName("button")[0].style.display = "none";
-        request = new XMLHttpRequest();
-        console.log("1 - request object created");
-        //q is the query parameter
-        //this is what we want the user to input
+      var query = document.getElementsByName("query")[0].value;
 
-        //var query = "<?php echo $_POST['input']; ?>";
-        var query = document.getElementsByName("query")[0].value;
-        alert(query);
+      if(query == ""){
+         document.getElementById("noinput").style.display = "inline-block";
+       }
+        else{
+          document.getElementById("noinput").style.display = "none";
+          request = new XMLHttpRequest();
+          console.log("1 - request object created");
 
-        // query = document.getElementById("input").value;
+          // url = "https://api.edamam.com/search?q=chicken&app_id=ea82839e&app_key=6e8bc70b6a0631d3b4b16b5c4a135d65";
+          url = "https://api.edamam.com/search?q=" + query + "&app_id=ea82839e&app_key=6e8bc70b6a0631d3b4b16b5c4a135d65&from=0&to=30";
+          request.open("GET", url, true)
+          console.log("2 - opened request file");
+          //runs when the state changes
+          request.onreadystatechange = function()
+          {
+              //if the operation is complete and the status is complete
+              if (request.readyState == 4 && request.status == 200)
+              {
+                  console.log("5 - response received");
+                  //gets the data
+                  result = request.responseText;
 
-        // url = "https://api.edamam.com/search?q=chicken&app_id=ea82839e&app_key=6e8bc70b6a0631d3b4b16b5c4a135d65";
-        url = "https://api.edamam.com/search?q=" + query + "&app_id=ea82839e&app_key=6e8bc70b6a0631d3b4b16b5c4a135d65&from=0&to=30";
-        request.open("GET", url, true)
-        console.log("2 - opened request file");
-        //runs when the state changes
-        request.onreadystatechange = function()
-        {
-            //if the operation is complete and the status is complete
-            if (request.readyState == 4 && request.status == 200)
-            {
-                console.log("5 - response received");
-                //gets the data
-                result = request.responseText;
-                //writing the raw data
-                // document.getElementById("data").innerHTML = result
-                // + "<br/><br/>";
+                  //putting the data back into the object
+                  food = JSON.parse(result);
 
-                //putting the data back into the object
-                food = JSON.parse(result);
+                  numRecipes = food.to;
+                  for (i=0; i<numRecipes; i++)
+                  {
+                      document.getElementById("name" + i + "div").innerHTML += food.hits[i].recipe.label;
+                      document.getElementById("name" + i + "div").setAttribute("href", food.hits[i].recipe.url);
+                      document.getElementById("image" + i + "div").setAttribute("src", food.hits[i].recipe.image);
+                      document.getElementById("name" + i).setAttribute("value", food.hits[i].recipe.label);
+                      document.getElementById("url" + i).setAttribute("value", food.hits[i].recipe.url);
+                      document.getElementById("image" + i).setAttribute("value", food.hits[i].recipe.image);
+                      urls[i] = food.hits[i].recipe.url;
+                      images[i] = food.hits[i].recipe.image;
+                      names[i] = food.hits[i].recipe.label;
+                  }
+              }
+              //request status is not yet ready
+              else if (request.readyState == 4 && request.status != 200) {
 
-                // document.getElementById("query").innerHTML +=
-                // food.q;
-
-                numRecipes = food.to;
-                for (i=0; i<numRecipes; i++)
-                {
-                    document.getElementById("name" + i + "div").innerHTML += food.hits[i].recipe.label;
-                    document.getElementById("name" + i + "div").setAttribute("href", food.hits[i].recipe.url);
-                    document.getElementById("image" + i + "div").setAttribute("src", food.hits[i].recipe.image);
-                    document.getElementById("name" + i).setAttribute("value", food.hits[i].recipe.label);
-                    document.getElementById("url" + i).setAttribute("value", food.hits[i].recipe.url);
-                    document.getElementById("image" + i).setAttribute("value", food.hits[i].recipe.image);
-                    urls[i] = food.hits[i].recipe.url;
-                    images[i] = food.hits[i].recipe.image;
-                    names[i] = food.hits[i].recipe.label;
-                }
-                //document.write("<img src='" + images[0] + "'/>");
-                // for (j=0; j<10; j++)
-                // {
-                //     alert(urls[j]);
-                //     alert(images[j]);
-                // }
-
-
+                  document.getElementById("data").innerHTML = "Something " +
+                  "is wrong!  Check the logs to see where this went off "
+                  + "the rails";
+              }
+              //request state is not yet ready
+              else if (request.readyState == 3) {
+                  document.getElementById("data").innerHTML = " ";
+              }
             }
-            //request status is not yet ready
-            else if (request.readyState == 4 && request.status != 200) {
 
-                document.getElementById("data").innerHTML = "Something " +
-                "is wrong!  Check the logs to see where this went off "
-                + "the rails";
-
-            }
-            //request state is not yet ready
-            else if (request.readyState == 3) {
-
-                document.getElementById("data").innerHTML = " ";
-
-            }
-        }
         // sending the request for the data from the web server
         request.send();
         console.log("4 - Request sent");
         document.getElementById("results").style.display = "inline";
+      }
     }
-
     </script>
 </head>
+
 <body>
+    <h1 class="header">Your Recipe Book </h1>
+    <h3 class="topnav">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspInput an ingredient to find a new recipe!</h3>
 
+    <div>
+      <img src="http://clipart-library.com/img/1674509.jpg" style=" width:192px; height:120px;" />
+  </div>
 
+    <form id="search" onsubmit="return recipe()">
+        <p class="subtitle">
+          Input Ingredient: <input type="text" name="query"></input>
+          <div id="noinput" class="error">Ingredient is required </div></p>
+          <input name="button" type="submit" value="Submit">
+    </form>
 
-
-    <h1 class="header"> Your Recipe Book </h1>
-
-    <h3 class="topnav" >Input an ingredient to find a new recipe!</h3>
-
-    <p class="subtitle">
-
-        Input Ingredient: <input type="text" name="query"></input><br>
-
-
-        <button type="submit" name="button" onClick="recipe()">Submit</button>
-
-    </p>
-    <br><br><br><br><br><br><br>
-
+    <h3 class="topnav" style="padding: 2px; color: #333;" > space </h3>
 
     <script language="javascript">
     var t = "";
-    t += "<div id='data'></div><br><br><br><br>";
+    t += "<div id='data'></div><br>";
     t += "<div class='results' id='results'>";
       for (i=0; i<30; i++)
       {
@@ -248,7 +233,7 @@
           t += "<form method='post' action='https://codebloodedfinal.herokuapp.com/add' >";
           t += "<input type='submit' name='box"+i+"' value='Add To: '>";
           t += "<input type='radio' name='choose"+i+"' value='Favorites'/> Favorites";
-          t += "<input type='radio' name='choose"+i+"' value='Didn't Like' /> Did Not Like";
+          t += "<input type='radio' name='choose"+i+"' value='Did Not Like' /> Did Not Like";
           t += "<input type='radio' name='choose"+i+"' value='Want To Try'/> Want To Try";
           t += "<input type='text' id='name"+i+"' name='name"+i+"' value='' style='display:none'/>";
           t += "<input type='text' id='url"+i+"' name='url"+i+"' value='' style='display:none'/>";
@@ -260,21 +245,14 @@
       }
     t += "</div></div>";
     document.write(t);
-
-</script>
-
-
-
-
-
-
+    </script>
 
     <div id="format"></div>
 
     <h4 class="bottombar" >
       <h4 class="bottombar" >
-          <form method="post" action="https://codebloodedfinal.herokuapp.com/display">
-      <!--<form method="post" action="http://localhost:8080/display">-->
+         <form method="post" action="https://codebloodedfinal.herokuapp.com/display">
+          <!-- <form method="post" action="http://localhost:8080/display"> -->
           <input type="submit" class="button farleft" name="submit" value="Favorites">
           <input type="submit" class="button midleft" name="submit" value="Want to Try">
           <input type="submit" class="button midright" name="submit" value="Didn't Like">
