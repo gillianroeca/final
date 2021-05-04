@@ -4,8 +4,8 @@ var qs = require('querystring');
 const MongoClient = require('mongodb').MongoClient;
 var readline = require('readline');
 const url = "mongodb+srv://cate1344:Cad94010@cluster0.tbm9v.mongodb.net/Recipe_Book?retryWrites=true&w=majority";  // connection string goes here
-//var port = process.env.PORT || 3000;
-var port = 8080;
+var port = process.env.PORT || 3000;
+//var port = 8080;
 
 http.createServer(function(req, res) {
 
@@ -119,8 +119,8 @@ http.createServer(function(req, res) {
        });
    }
 
-
-    }).listen(8080);
+}).listen(port);
+    //}).listen(8080);
 
 function insert_mongo(coll, pname, purl, pimage) {
     MongoClient.connect(url, { useUnifiedTopology: true }, function(err, db) {
@@ -175,8 +175,6 @@ function output_mongo_collections(name, coll, callback) {
           output += "</form>";
           output += "<br><br><br>";
 
-
-        //  output += "<a href='http://localhost:8080/'>Home</a>";
           for (i=0; i<result.length; i++)
           {
               output += "<div class='recipe_block' style='margin: 25px; border: 3px solid #000; float: left; width: 300px; height: 340px; background-color: #c3ebe7;'>"
