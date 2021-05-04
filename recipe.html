@@ -142,11 +142,11 @@
     {
       var query = document.getElementsByName("query")[0].value;
 
-      if(query == ""){
-         document.getElementById("noinput").style.display = "inline-block";
-       }
-        else{
-          document.getElementById("noinput").style.display = "none";
+      //if(query == ""){
+      //   document.getElementById("noinput").style.display = "inline-block";
+       //}
+      //  else{
+      //    document.getElementById("noinput").style.display = "none";
           request = new XMLHttpRequest();
           console.log("1 - request object created");
 
@@ -155,8 +155,10 @@
           request.open("GET", url, true)
           console.log("2 - opened request file");
           //runs when the state changes
+          alert("hi");
           request.onreadystatechange = function()
           {
+            alert("hey");
               //if the operation is complete and the status is complete
               if (request.readyState == 4 && request.status == 200)
               {
@@ -179,6 +181,7 @@
                       urls[i] = food.hits[i].recipe.url;
                       images[i] = food.hits[i].recipe.image;
                       names[i] = food.hits[i].recipe.label;
+                      alert(food.hits[i].recipe.label);
                   }
               }
               //request status is not yet ready
@@ -199,7 +202,7 @@
         console.log("4 - Request sent");
         document.getElementById("results").style.display = "inline";
       }
-    }
+    //}
     </script>
 </head>
 
@@ -208,7 +211,7 @@
     <h3 class="topnav">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspInput an ingredient to find a new recipe!</h3>
 
     <div>
-      <img src="http://clipart-library.com/img/1674509.jpg" style=" width:192px; height:120px;" />
+      <img src="https://gillianroeca.smugmug.com/My-First-Gallery/n-Dwq8hz/i-nC2JZ7z/A" style=" width:192px; height:120px;" />
   </div>
 
     <form id="search" onsubmit="return recipe()">
