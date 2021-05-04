@@ -228,8 +228,8 @@ function show_collection(coll, header_name, callback) {
           output += "padding: 30px; top: 0; left:0; width: 100%; z-index: 2;";
           output += "text-shadow: -1px 1px 0 #FFFFFF, 1px 1px 0 #FFFFFF, 1px -1px 0 #FFFFFF, -1px -1px 0 #FFFFFF;'>";
           output += header_name + "</h1><br>";
-          output += "<form method='post' action='http://localhost:8080/'>";
-          // output += "<form method='post' action='https://codebloodedfinal.herokuapp.com/'>";
+          //output += "<form method='post' action='http://localhost:8080/'>";
+          output += "<form method='post' action='https://codebloodedfinal.herokuapp.com/'>";
           output += "<input style = 'text-align:center; background-color:black; left:3vw;";
           output += "background-image: linear-gradient(white, #FF853B); background-size: 30px 100%, 100% 100%; ";
           output += "width:20vw; height:50px; top:20px; line-height:20px; color:black; margin: 5px 8px;";
@@ -244,8 +244,8 @@ function show_collection(coll, header_name, callback) {
               output += "<div class='recipe_block' style='margin: 25px; border: 3px solid #000; float: left; width: 300px; height: 340px; background-color: #c3ebe7;'>"
               output += "<a href='" + result[i]["url"] + "' target='_blank'>" + result[i]["name"] + "</a><br>";
               output += "<img src='" + result[i]["image"] + "'><br>";
-              output += "<form method='post' action='http://localhost:8080/delete'>";
-              // output += "<form method='post' action='https://codebloodedfinal.herokuapp.com/delete'>";
+              //output += "<form method='post' action='http://localhost:8080/delete'>";
+              output += "<form method='post' action='https://codebloodedfinal.herokuapp.com/delete'>";
               output += "<input type='submit' name='box"+i+"' value='Delete'>"
               output += "<input type='text' id='collection"+i+"' name='choose"+i+"' value='"+coll+"' style='display:none'/>";
               output += "<input type='text' id='name"+i+"' name='name"+i+"' value='"+result[i]["name"]+"' style='display:none'/>";
