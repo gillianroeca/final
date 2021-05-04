@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>Main</title>
-    <link rel="stylesheet" type="text/css" href="style.css" />
+    <!-- <link rel="stylesheet" type="text/css" href="style.css" /> -->
     <style>
     .header{
         background-color: #f74a4a;
@@ -19,10 +19,14 @@
     .topnav{
         overflow: hidden;
         background-color: #333;
-        top: 115px;
+        top: 60px;
         left:0;
         width: 100%;
-        z-index:5;
+        z-index:2;
+        text-align: center;
+        color: white;
+        padding: 10px;
+        font-weight: lighter;
     }
 
     .bottombar{
@@ -41,20 +45,43 @@
         background-color:black;
         background-image: linear-gradient(white, #FF853B);
         background-size: 30px 100%, 100% 100%;
-        width:150px;
+        width:20vw;
         height:50px;
-        top:25px;
+        top:20px;
         line-height:20px;
         padding: 0px;
         color:black;
-        margin: 0px 76px;
+        margin: 5px 8px;
         border: 3px black solid;
         border-radius: 10px;
         font-size: 17px;
         text-decoration: none;
         position:relative;
         float:left;
-        z-index:3
+        z-index:3;
+    }
+
+    .farleft {
+        left:3vw;
+    }
+    .midleft {
+        left:6vw;
+    }
+    .midright {
+        left:9vw;
+    }
+    .farright {
+        left:12vw;
+    }
+
+    .button:hover {
+        background-image: linear-gradient(white, #FF9F5C);
+        cursor: pointer;
+    }
+
+    .button:active {
+        background-image: linear-gradient(white, #FFC093);
+        cursor: pointer;
     }
 
     .container {
@@ -77,16 +104,17 @@
 
     .recipe_block {
         margin: 25px;
-        border: 1px solid #000;
+        border: 3px solid #000;
         float: left;
         width: 300px;
-        height: 500px;
+        height: 390px;
+        background-color: #c3ebe7;
 
     }
 
     .recipe_block img {
         width: 300px;
-        height: 400px;
+        height: 300px;
     }
     .desc {
         padding: 15px;
@@ -120,7 +148,7 @@
         // query = document.getElementById("input").value;
 
         // url = "https://api.edamam.com/search?q=chicken&app_id=ea82839e&app_key=6e8bc70b6a0631d3b4b16b5c4a135d65";
-        url = "https://api.edamam.com/search?q=" + query + "&app_id=ea82839e&app_key=6e8bc70b6a0631d3b4b16b5c4a135d65";
+        url = "https://api.edamam.com/search?q=" + query + "&app_id=ea82839e&app_key=6e8bc70b6a0631d3b4b16b5c4a135d65&from=0&to=30";
         request.open("GET", url, true)
         console.log("2 - opened request file");
         //runs when the state changes
@@ -145,12 +173,12 @@
                 numRecipes = food.to;
                 for (i=0; i<numRecipes; i++)
                 {
-                    //document.getElementById("format").innerHTML +=
-                    //food.hits[i].recipe.label + ", ";
-                    document.getElementById("recipe" + i).innerHTML +=
-                    food.hits[i].recipe.label;
-                    //document.getElementById("url" + i).innerHTML +=
-                    //food.hits[i].recipe.url;
+                    document.getElementById("name" + i + "div").innerHTML += food.hits[i].recipe.label;
+                    document.getElementById("name" + i + "div").setAttribute("href", food.hits[i].recipe.url);
+                    document.getElementById("image" + i + "div").setAttribute("src", food.hits[i].recipe.image);
+                    document.getElementById("name" + i).setAttribute("value", food.hits[i].recipe.label);
+                    document.getElementById("url" + i).setAttribute("value", food.hits[i].recipe.url);
+                    document.getElementById("image" + i).setAttribute("value", food.hits[i].recipe.image);
                     urls[i] = food.hits[i].recipe.url;
                     images[i] = food.hits[i].recipe.image;
                     names[i] = food.hits[i].recipe.label;
@@ -175,8 +203,7 @@
             //request state is not yet ready
             else if (request.readyState == 3) {
 
-                document.getElementById("data").innerHTML = "Too soon! " +
-                "Try again";
+                document.getElementById("data").innerHTML = " ";
 
             }
         }
@@ -185,10 +212,6 @@
         console.log("4 - Request sent");
         document.getElementById("results").style.display = "inline";
     }
-
-
-
-
 
     </script>
 </head>
@@ -199,12 +222,7 @@
 
     <h1 class="header"> Your Recipe Book </h1>
 
-    <h3 class="topnav" >nav</h3>
-
-
-    <div class="container">
-        <img src="background.jpeg" style="width:100%">
-    </div>
+    <h3 class="topnav" >Input an ingredient to find a new recipe!</h3>
 
     <p class="subtitle">
 
@@ -217,88 +235,49 @@
     <br><br><br><br><br><br><br>
 
 
+    <script language="javascript">
+    var t = "";
+    t += "<div id='data'></div><br><br><br><br>";
+    t += "<div class='results' id='results'>";
+      for (i=0; i<30; i++)
+      {
+          t += "<div class='recipe_block' id='recipe'"+i+"' >";
+          t += "<a href='' id='name"+i+"div'></a>";
+          t += "<div class='desc'>";
+          t += "<form method='post' action='http://localhost:8080/add' >";
+          t += "<input type='submit' name='box"+i+"' value='Add To: '>";
+          t += "<input type='radio' name='choose"+i+"' value='Favorites'/> Favorites";
+          t += "<input type='radio' name='choose"+i+"' value='Didn't Like' /> Did Not Like";
+          t += "<input type='radio' name='choose"+i+"' value='Want To Try'/> Want To Try";
+          t += "<input type='text' id='name"+i+"' name='name"+i+"' value='' style='display:none'/>";
+          t += "<input type='text' id='url"+i+"' name='url"+i+"' value='' style='display:none'/>";
+          t += "<input type='text' id='image"+i+"' name='image"+i+"' value='' style='display:none'/>";
+          t += "</form>";
+          t += "</div>";
+          t += "<img id='image"+i+"div' src='' width='10' height='10'>";
+          t += "</div>";
+      }
+    t += "</div></div>";
+    document.write(t);
 
-    <div id="data"></div><br><br><br><br>
-    <!-- label = name of recipe, source = where recipe is from, url = link to recipe  -->
-    <div class="results" id="results">
-
-        <div class="recipe_block" id="recipe0">
-            <div id="url0">
-
-            </div>
-            <!-- <img src="https://www.edamam.com/web-img/e42/e42f9119813e890af34c259785ae1cfb.jpg"> -->
-            <script>
-            alert(images[0]);
-            document.write("<img src='" + images[0] + "'/>");
-
-            </script>
-            <div class="desc">
-                Add to: <br>
-                <input type="button" name="fav" value="Favorite" onClick = "parent.location='results.js'">
-                <input type="button" name="didntlike" value="Didn't Like" onClick = "addToDatabase(2, 0)">
-                <input type="button" name="wanttotry" value="Want To Try" onClick = "addToDatabase(3, 0)">
-            </div>
-        </div>
-        <div class="recipe_block" id="recipe1">
-            <div id="url1">
-
-            </div>
+</script>
 
 
 
-        </div>
-        <div class="recipe_block" id="recipe2">
-            <div id="url2">
 
-            </div>
-        </div>
-        <div class="recipe_block" id="recipe3">
-            <div id="url3">
-
-            </div>
-        </div>
-        <div class="recipe_block" id="recipe4">
-            <div id="url4">
-
-            </div>
-        </div>
-        <div class="recipe_block" id="recipe5">
-            <div id="url5">
-
-            </div>
-        </div>
-        <div class="recipe_block" id="recipe6">
-            <div id="url6">
-
-            </div>
-        </div>
-        <div class="recipe_block" id="recipe7">
-            <div id="url7">
-
-            </div>
-        </div>
-        <div class="recipe_block" id="recipe8">
-            <div id="url8">
-
-            </div>
-        </div>
-        <div class="recipe_block" id="recipe9">
-            <div id="url9">
-
-            </div>
-        </div>
-
-    </div>
 
 
 
     <div id="format"></div>
 
     <h4 class="bottombar" >
-        <a class="button" href="https://codebloodedfinal.herokuapp.com/favorites"><p>Favorites</p></a>
-        <a class="button" href="https://codebloodedfinal.herokuapp.com/wanttotry"><p>Want To Try</p></a>
-        <a class="button" href="https://codebloodedfinal.herokuapp.com/didntlike"><p>Didn't Like</p></a>
-        <a class="button" href="https://codebloodedfinal.herokuapp.com/explore"><p>Explore</p></a>
+      <h4 class="bottombar" >
+      <form method="post" action="http://localhost:8080/display">
+          <input type="submit" class="button farleft" name="submit" value="Favorites">
+          <input type="submit" class="button midleft" name="submit" value="Want to Try">
+          <input type="submit" class="button midright" name="submit" value="Didn't Like">
+          <input type="submit" class="button farright" name="submit" value="Explore">
+      </form>
     </h4>
 
 </body>
