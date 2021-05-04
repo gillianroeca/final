@@ -23,6 +23,10 @@
         text-shadow: -1px 1px 0 #FFFFFF, 1px 1px 0 #FFFFFF, 1px -1px 0 #FFFFFF, -1px -1px 0 #FFFFFF;
     }
 
+    .header img {
+    	width: 8%;
+    }
+
     .topnav{
         overflow: hidden;
         background-color: #333;
@@ -187,7 +191,25 @@
 
     function recipe()
     {
+
+        for (i=0; i<30; i++){
+            document.getElementById("name" + i + "div").innerHTML = "";
+        }
+
       var query = document.getElementsByName("query")[0].value;
+      var meal;
+      var health;
+      if (document.getElementById('Breakfast').checked) { meal = "Breakfast";}
+      else if (document.getElementById('Lunch').checked) { meal = "Lunch";}
+      else if (document.getElementById('Dinner').checked) { meal = "Dinner";}
+      else if (document.getElementById('Snack').checked) { meal = "Snack";}
+      else {meal == ""};
+
+      if (document.getElementById('dairy-free').checked) { health = "dairy-free";}
+      else if (document.getElementById('gluten-free').checked) { health = "gluten-free";}
+      else if (document.getElementById('tree-nut-free').checked) { health = "tree-nut-free";}
+      else if (document.getElementById('vegetarian').checked) { health = "vegetarian";}
+      else {health = ""};
 
       if(query == ""){
          document.getElementById("noinput").style.display = "inline-block";
@@ -197,8 +219,26 @@
           request = new XMLHttpRequest();
           console.log("1 - request object created");
 
+          var url;
+          if (meal == "" && health == "")
+          {
+              url = "https://api.edamam.com/search?q=" + query + "&app_id=ea82839e&app_key=6e8bc70b6a0631d3b4b16b5c4a135d65&from=0&to=30";
+          }
+          else if (meal == "" && health != "")
+          {
+              url = "https://api.edamam.com/search?q=" + query + "&app_id=ea82839e&app_key=6e8bc70b6a0631d3b4b16b5c4a135d65&from=0&to=30&health=" + health;
+          }
+          else if (meal != "" && health == "")
+          {
+              url = "https://api.edamam.com/search?q=" + query + "&app_id=ea82839e&app_key=6e8bc70b6a0631d3b4b16b5c4a135d65&from=0&to=30&meal=" + meal;
+          }
+          else
+          {
+              url = "https://api.edamam.com/search?q=" + query + "&app_id=ea82839e&app_key=6e8bc70b6a0631d3b4b16b5c4a135d65&from=0&to=30&meal=" + meal + "&health=" + health;
+          }
+
           // url = "https://api.edamam.com/search?q=chicken&app_id=ea82839e&app_key=6e8bc70b6a0631d3b4b16b5c4a135d65";
-          url = "https://api.edamam.com/search?q=" + query + "&app_id=ea82839e&app_key=6e8bc70b6a0631d3b4b16b5c4a135d65&from=0&to=30";
+          //url = "https://api.edamam.com/search?q=" + query + "&app_id=ea82839e&app_key=6e8bc70b6a0631d3b4b16b5c4a135d65&from=0&to=30&meal=" + meal + "&health=" + health;
           request.open("GET", url, true)
           console.log("2 - opened request file");
           //runs when the state changes
@@ -255,17 +295,36 @@
 
 <body>
 
-    <h1 class="header">Your Recipe Book </h1>
+    <h1 class="header">Your Recipe Book
+      <img src="https://photos.smugmug.com/photos/i-zfcjgbV/0/ba35dc40/S/i-zfcjgbV-S.png" alt="">
+    </h1>
     <h3 class="topnav">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspInput an ingredient to find a new recipe!</h3>
 
 
 
     <form style="text-align: center;" id="search" onsubmit="return recipe()">
+        <p class="topnav">
+            <input type="radio" name="meal" id ="Breakfast" value="Breakfast">Breakfast
+            <input type="radio" name="meal" id ="Lunch" value="Lunch">Lunch
+            <input type="radio" name="meal" id ="Dinner" value="Dinner">Dinner
+            <input type="radio" name="meal" id ="Snack" value="Snack">Snack
+        </p>
+        <p class="topnav">
+            <input type="radio" name="health" id ="dairy-free" value="dairy-free">Dairy Free
+            <input type="radio" name="health" id ="gluten-free" value="gluten-free">Gluten Free
+            <input type="radio" name="health" id ="tree-nut-free" value="tree-nut-free">Nut Free
+            <input type="radio" name="health" id ="vegetarian" value="vegetarian">Vegetarian
+        </p>
+
         <p class="subtitle">
           &nbsp&nbsp&nbsp&nbsp&nbsp&nbspInput Ingredient: <input type="text" name="query"></input>
           <div id="noinput" class="error">Ingredient is required </div></p>
           <input class="find" name="button" type="submit" value="Submit">
-    </form>
+        </form>
+          <form style="text-align:center;" method='post' action='https://codebloodedfinal.herokuapp.com/'>
+              <input class="find" name="reset" type="submit" value="Reset Inputs">
+          </form>
+
 
     <h3 class="topnav" style="padding: 2px; color: #333;" > space </h3>
 
@@ -282,8 +341,8 @@
           t += "<div class='recipe_block' id='recipe'"+i+"' >";
           t += "<div class='desc'>";
           t += "<a href='' target='_blank' id='name"+i+"div'></a><br><br>";
-          t += "<form onsubmit='return alertadded()' method='post' action='http://localhost:8080/add' >";
-           //t += "<form method='post' action='https://codebloodedfinal.herokuapp.com/add' >";
+          //t += "<form onsubmit='return alertadded()' method='post' action='http://localhost:8080/add' >";
+          t += "<form method='post' action='https://codebloodedfinal.herokuapp.com/add' >";
           t += "<input type='submit' name='box"+i+"' value='Add To: '>";
           t += "<input type='radio' name='choose"+i+"' value='Favorites'/> Favorites";
           t += "<input type='radio' name='choose"+i+"' value='Did Not Like' /> Did Not Like";
@@ -304,8 +363,8 @@
 
     <h4 class="bottombar" >
       <h4 class="bottombar" >
-         <!--<form method="post" action="https://codebloodedfinal.herokuapp.com/display">-->
-           <form method="post" action="http://localhost:8080/display">
+         <form method="post" action="https://codebloodedfinal.herokuapp.com/display">
+          <!-- <form method="post" action="http://localhost:8080/display">-->
           <input type="submit" class="button farleft" name="submit" value="Favorites">
           <input type="submit" class="button midleft" name="submit" value="Want to Try">
           <input type="submit" class="button midright" name="submit" value="Didn't Like">
