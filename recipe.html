@@ -142,11 +142,11 @@
     {
       var query = document.getElementsByName("query")[0].value;
 
-      //if(query == ""){
-      //   document.getElementById("noinput").style.display = "inline-block";
-       //}
-      //  else{
-      //    document.getElementById("noinput").style.display = "none";
+      if(query == ""){
+         document.getElementById("noinput").style.display = "inline-block";
+       }
+        else{
+          document.getElementById("noinput").style.display = "none";
           request = new XMLHttpRequest();
           console.log("1 - request object created");
 
@@ -155,10 +155,10 @@
           request.open("GET", url, true)
           console.log("2 - opened request file");
           //runs when the state changes
-          alert("hi");
+          alert("1");
           request.onreadystatechange = function()
           {
-            alert("hey");
+            alert("2");
               //if the operation is complete and the status is complete
               if (request.readyState == 4 && request.status == 200)
               {
@@ -202,7 +202,7 @@
         console.log("4 - Request sent");
         document.getElementById("results").style.display = "inline";
       }
-    //}
+    }
     </script>
 </head>
 
