@@ -203,13 +203,13 @@
       else if (document.getElementById('Lunch').checked) { meal = "Lunch";}
       else if (document.getElementById('Dinner').checked) { meal = "Dinner";}
       else if (document.getElementById('Snack').checked) { meal = "Snack";}
-      else {meal == ""};
+      else {meal == "";}
 
       if (document.getElementById('dairy-free').checked) { health = "dairy-free";}
       else if (document.getElementById('gluten-free').checked) { health = "gluten-free";}
       else if (document.getElementById('tree-nut-free').checked) { health = "tree-nut-free";}
       else if (document.getElementById('vegetarian').checked) { health = "vegetarian";}
-      else {health = ""};
+      else {health = "";}
 
       if(query == ""){
          document.getElementById("noinput").style.display = "inline-block";
@@ -230,11 +230,11 @@
           }
           else if (meal != "" && health == "")
           {
-              url = "https://api.edamam.com/search?q=" + query + "&app_id=ea82839e&app_key=6e8bc70b6a0631d3b4b16b5c4a135d65&from=0&to=30&meal=" + meal;
+              url = "https://api.edamam.com/search?q=" + query + "&app_id=ea82839e&app_key=6e8bc70b6a0631d3b4b16b5c4a135d65&from=0&to=30&mealType=" + meal;
           }
           else
           {
-              url = "https://api.edamam.com/search?q=" + query + "&app_id=ea82839e&app_key=6e8bc70b6a0631d3b4b16b5c4a135d65&from=0&to=30&meal=" + meal + "&health=" + health;
+              url = "https://api.edamam.com/search?q=" + query + "&app_id=ea82839e&app_key=6e8bc70b6a0631d3b4b16b5c4a135d65&from=0&to=30&mealType=" + meal + "&health=" + health;
           }
 
           // url = "https://api.edamam.com/search?q=chicken&app_id=ea82839e&app_key=6e8bc70b6a0631d3b4b16b5c4a135d65";
